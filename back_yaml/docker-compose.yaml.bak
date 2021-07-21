@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Colombo
+      WEBPASSWORD: 'pihole'
+    networks:
+      - pie
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "80:80/tcp"
+      - "443:443/tcp"
+    volumes:
+      #- /etc/localtime:/etc/localtime:ro
+      - etc-pihole:/etc/pihole/
+      - etc-dnsmasq.d:/etc/dnsmasq.d/
+
+networks:
+  pie:
+
+volumes:
+  # Persistent Pihole Data
+  etc-pihole:
+  etc-dnsmasq.d:
